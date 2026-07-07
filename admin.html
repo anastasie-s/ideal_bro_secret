@@ -7,16 +7,11 @@
   <title>Admin · IDEAL BRO</title>
   <link rel="stylesheet" href="style.css" />
 </head>
+
 <body>
   <div class="grain"></div>
 
-  <main class="page">
-    
-    <section class="intro">
-      <p class="kicker">admin protocol</p>
-      <h1>Pair Generator</h1>
-      <p class="lead">Загрузи результаты теста, раздели участников на две группы и собери пары.</p>
-    </section>
+  <main class="admin-page">
     <section class="lock-card" id="adminLockScreen">
       <span class="lock-icon">🔒</span>
       <h2>Admin access</h2>
@@ -25,28 +20,68 @@
       <button class="btn primary full" id="adminUnlockBtn">Открыть админ-панель →</button>
       <p id="adminErrorText" class="error hidden">Пароль неверный.</p>
     </section>
-    <section class="test-card hidden" id="adminPanel">
-      <button class="btn primary" id="loadBtn">Загрузить результаты</button>
-      <button class="btn ghost" id="splitBtn">Разделить на 2 группы</button>
-      <button class="btn primary" id="pairBtn">Составить пары</button>
 
-      <h2>Участники</h2>
-      <div id="playersList" class="admin-list"></div>
+    <section class="admin-panel hidden" id="adminPanel">
+      <p class="kicker">АДМИН-ПРОТОКОЛ</p>
 
-      <h2>Группы</h2>
-      <div class="admin-grid">
-        <div>
-          <h3>Group A</h3>
-          <div id="groupA" class="admin-list"></div>
-        </div>
-        <div>
-          <h3>Group B</h3>
-          <div id="groupB" class="admin-list"></div>
-        </div>
+      <div class="admin-actions">
+        <button class="btn primary" id="loadBtn">Загрузить результаты</button>
+        <button class="btn ghost" id="seedBtn">Заполнить тестовыми данными</button>
+        <button class="btn ghost" id="resetBtn">Начать сначала</button>
       </div>
 
-      <h2>Пары</h2>
-      <div id="pairsList" class="admin-list"></div>
+      <div id="adminMessage" class="admin-message hidden"></div>
+
+      <section class="admin-step hidden" id="playersStep">
+        <h2>Участники</h2>
+        <div id="playersList" class="admin-list"></div>
+        <button class="btn primary" id="splitBtn">Разделить на 2 группы →</button>
+      </section>
+
+      <section class="admin-step hidden" id="groupsStep">
+        <h2>Группы</h2>
+        <div class="admin-grid">
+          <div>
+            <h3>Group A</h3>
+            <div id="groupA" class="admin-list"></div>
+          </div>
+          <div>
+            <h3>Group B</h3>
+            <div id="groupB" class="admin-list"></div>
+          </div>
+        </div>
+      </section>
+
+      <section class="admin-step hidden" id="pairsStep">
+        <h2>Пары</h2>
+
+        <div class="pair-round">
+          <div>
+            <h3>Игра 1</h3>
+            <p>Первый протокол совместимости.</p>
+          </div>
+          <button class="btn primary" data-game="1">Сформировать пары</button>
+          <div id="pairsGame1" class="admin-list"></div>
+        </div>
+
+        <div class="pair-round">
+          <div>
+            <h3>Игра 2</h3>
+            <p>Новые пары без повторов.</p>
+          </div>
+          <button class="btn primary" data-game="2">Сформировать пары</button>
+          <div id="pairsGame2" class="admin-list"></div>
+        </div>
+
+        <div class="pair-round">
+          <div>
+            <h3>Игра 3</h3>
+            <p>Финальная сборка оставшихся вариантов.</p>
+          </div>
+          <button class="btn primary" data-game="3">Сформировать пары</button>
+          <div id="pairsGame3" class="admin-list"></div>
+        </div>
+      </section>
     </section>
   </main>
 

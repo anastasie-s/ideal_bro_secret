@@ -1,4 +1,4 @@
-const SHEETS_URL = "ТВОЙ_WEB_APP_URL_СЮДА";
+const SHEETS_URL = "https://script.google.com/macros/s/AKfycbybdZ7saSVOPyAm5TdZP0qz1eFQg_wJO_-eAV3J8PnKfqecP8PCktjeUNWUMP7wWkc/exec";
 
 let players = [];
 let groupA = [];

@@ -133,43 +133,46 @@ let state = {
   answers: [],
 };
 const $ = (id) => document.getElementById(id);
-$("startBtn").onclick = () => {
-  const name = $("playerName").value.trim();
-  if (!name) {
-    $("playerName").focus();
-    return;
-  }
-  state.name = name;
-  $("startScreen").classList.add("hidden");
-  $("questionScreen").classList.remove("hidden");
-  renderQuestion();
-};
+function checkPasswordViaJsonp(password) {
+  return new Promise((resolve, reject) => {
+    const callbackName = "idealbroCallback_" + Date.now();
+
+    window[callbackName] = (response) => {
+      delete window[callbackName];
+      script.remove();
+      resolve(response.ok === true);
+    };
+
+    const script = document.createElement("script");
+    const url =
+      SHEETS_URL +
+      "?action=checkPassword" +
+      "&password=" + encodeURIComponent(password) +
+      "&callback=" + callbackName;
+
+    script.src = url;
+    script.onerror = reject;
+    document.body.appendChild(script);
+  });
+}
+
 $("testUnlockBtn").onclick = async () => {
   const password = $("testCodeInput").value.trim();
 
+  $("testErrorText").classList.add("hidden");
   $("testUnlockBtn").textContent = "Проверяем...";
 
-  try {
-    await fetch(SHEETS_URL, {
-      method: "POST",
-      mode: "no-cors",
-      headers: {
-        "Content-Type": "text/plain"
-      },
-      body: JSON.stringify({
-        action: "checkPassword",
-        password
-      })
-    });
+  const ok = await checkPasswordViaJsonp(password);
 
-    sessionStorage.setItem("idealbro-test-unlocked", "yes");
-    $("testLockScreen").classList.add("hidden");
-    $("startScreen").classList.remove("hidden");
-
-  } catch (error) {
+  if (!ok) {
     $("testErrorText").classList.remove("hidden");
+    $("testUnlockBtn").textContent = "Открыть тест →";
+    return;
   }
 
+  sessionStorage.setItem("idealbro-test-unlocked", "yes");
+  $("testLockScreen").classList.add("hidden");
+  $("startScreen").classList.remove("hidden");
   $("testUnlockBtn").textContent = "Открыть тест →";
 };
 
@@ -181,6 +184,17 @@ if (sessionStorage.getItem("idealbro-test-unlocked") === "yes") {
   $("testLockScreen").classList.add("hidden");
   $("startScreen").classList.remove("hidden");
 }
+$("startBtn").onclick = () => {
+  const name = $("playerName").value.trim();
+  if (!name) {
+    $("playerName").focus();
+    return;
+  }
+  state.name = name;
+  $("startScreen").classList.add("hidden");
+  $("questionScreen").classList.remove("hidden");
+  renderQuestion();
+};
 function renderQuestion() {
   const q = questions[state.index];
   $("counter").textContent =

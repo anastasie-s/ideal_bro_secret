@@ -91,13 +91,15 @@ nav a:hover {
   font: 700 12px Oswald;
   letter-spacing: 0.12em;
 }
-.hero {
-  min-height: 620px;
-  display: grid;
-  grid-template-columns: 1.1fr 0.9fr;
-  gap: 40px;
-  align-items: center;
-  padding: 70px clamp(22px, 7vw, 110px) 40px;
+.hero{
+  min-height:calc(100vh - 150px);
+  display:flex;
+  align-items:center;
+  padding:70px clamp(22px,10vw,160px);
+}
+
+.hero-text{
+  max-width:850px;
 }
 .kicker {
   color: var(--gold);

@@ -6,6 +6,54 @@ let groupB = [];
 
 const $ = (id) => document.getElementById(id);
 
+function checkAdminPassword(password) {
+  return new Promise((resolve, reject) => {
+    const callbackName = "idealbroAdminPass_" + Date.now();
+
+    window[callbackName] = (response) => {
+      delete window[callbackName];
+      script.remove();
+      resolve(response.ok === true);
+    };
+
+    const script = document.createElement("script");
+    script.src =
+      SHEETS_URL +
+      "?action=checkAdminPassword" +
+      "&password=" + encodeURIComponent(password) +
+      "&callback=" + callbackName;
+
+    script.onerror = reject;
+    document.body.appendChild(script);
+  });
+}
+
+$("adminUnlockBtn").onclick = async () => {
+  $("adminErrorText").classList.add("hidden");
+  $("adminUnlockBtn").textContent = "Проверяем...";
+
+  const ok = await checkAdminPassword($("adminCodeInput").value);
+
+  if (!ok) {
+    $("adminErrorText").classList.remove("hidden");
+    $("adminUnlockBtn").textContent = "Открыть админку →";
+    return;
+  }
+
+  sessionStorage.setItem("idealbro-admin-unlocked", "yes");
+  $("adminLockScreen").classList.add("hidden");
+  $("adminPanel").classList.remove("hidden");
+};
+
+$("adminCodeInput").addEventListener("keydown", (e) => {
+  if (e.key === "Enter") $("adminUnlockBtn").click();
+});
+
+if (sessionStorage.getItem("idealbro-admin-unlocked") === "yes") {
+  $("adminLockScreen").classList.add("hidden");
+  $("adminPanel").classList.remove("hidden");
+}
+
 function jsonp(action) {
   return new Promise((resolve, reject) => {
     const callbackName = "idealbroAdmin_" + Date.now();

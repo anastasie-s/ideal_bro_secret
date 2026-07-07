@@ -35,7 +35,13 @@
           <span class="lock-icon">🔒</span>
           <h2>Доступ к тесту</h2>
           <p class="sub">Введи код, который выдал организатор.</p>
-          <input id="testCodeInput" class="input code" placeholder="Код доступа" autocomplete="off" />
+          <input
+            id="testCodeInput"
+            class="input code"
+            type="password"
+            placeholder="Код доступа"
+            autocomplete="off"
+          />
           <button class="btn primary full" id="testUnlockBtn">Открыть тест →</button>
           <p id="testErrorText" class="error hidden">Код неверный.</p>
         </div>

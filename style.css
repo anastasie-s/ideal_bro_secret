@@ -1556,3 +1556,79 @@ button:disabled{
   letter-spacing:.08em;
   text-transform:uppercase;
 }
+.reveal-card{
+  opacity:0;
+  transform:translateY(14px);
+  animation:revealCard .55s ease forwards;
+}
+
+@keyframes revealCard{
+  to{
+    opacity:1;
+    transform:translateY(0);
+  }
+}
+
+.inline-loader{
+  min-height:150px;
+  display:grid;
+  place-items:center;
+  gap:14px;
+  text-align:center;
+  color:var(--gold2);
+}
+
+.inline-loader p{
+  margin:0;
+  color:var(--gold2);
+  font-weight:900;
+  letter-spacing:.08em;
+}
+
+.loader-progress{
+  width:min(260px, 80%);
+  height:4px;
+  border-radius:999px;
+  background:rgba(255,255,255,.08);
+  overflow:hidden;
+}
+
+.loader-progress-bar{
+  height:100%;
+  width:0%;
+  background:var(--gold2);
+  transition:width .7s ease;
+}
+
+.gold-sparks{
+  position:absolute;
+  inset:0;
+  pointer-events:none;
+  overflow:hidden;
+}
+
+.gold-spark{
+  position:absolute;
+  width:6px;
+  height:6px;
+  border-radius:50%;
+  background:var(--gold2);
+  opacity:0;
+  animation:sparkFly .75s ease-out forwards;
+}
+
+@keyframes sparkFly{
+  0%{
+    opacity:1;
+    transform:translate(0,0) scale(1);
+  }
+  100%{
+    opacity:0;
+    transform:translate(var(--x), var(--y)) scale(.3);
+  }
+}
+
+.admin-left,
+.admin-right{
+  position:relative;
+}

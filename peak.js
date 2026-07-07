@@ -1,1 +1,64 @@
-const missions={TABURET:{name:"Табурет",text:"Для развития устойчивости трижды подряд потеряй равновесие на медузе."},FLOMASTER:{name:"Фломастер",text:"Найди время немного отдохнуть в колючках. Пяти секунд будет достаточно."},PELMEN:{name:"Пельмень",text:"Найди лиану и не упусти шанс эффектно зацепиться за неё после прыжка сверху."},BUDILNIK:{name:"Будильник",text:"Проверь свою стрессоустойчивость через непосредственное взаимодействие с ядовитой миной."},VERMISHEL:{name:"Вермишель",text:"Найди гриб и не упусти шанс эффектно приземлиться на него после прыжка сверху."},SHVABRA:{name:"Швабра",text:"Проверь свою стрессоустойчивость через непосредственное взаимодействие со споровым облаком."},MUSHROOM:{name:"Грибной протокол",text:"Найди гриб и используй его максимально эффектно. Чем драматичнее момент, тем лучше."}};const codeInput=document.getElementById("codeInput"),unlockBtn=document.getElementById("unlockBtn"),errorText=document.getElementById("errorText"),lockCard=document.getElementById("lockCard"),missionCard=document.getElementById("missionCard");function normalize(v){return v.trim().toUpperCase().replaceAll("Ё","Е").replace(/[^A-ZА-Я0-9]/g,"")}function unlock(){const code=normalize(codeInput.value),mission=missions[code];if(!mission){errorText.classList.remove("hidden");return}document.getElementById("missionName").textContent=mission.name;document.getElementById("missionText").textContent=mission.text;lockCard.classList.add("hidden");missionCard.classList.remove("hidden");sessionStorage.setItem("idealbro-peak-code",code)}unlockBtn.onclick=unlock;codeInput.onkeydown=e=>{if(e.key==="Enter")unlock()};const saved=sessionStorage.getItem("idealbro-peak-code");if(saved&&missions[saved]){codeInput.value=saved;unlock()}
+const missions = {
+  TABURET: {
+    name: "Табурет",
+    text: "Для развития устойчивости трижды подряд потеряй равновесие на медузе.",
+  },
+  FLOMASTER: {
+    name: "Фломастер",
+    text: "Найди время немного отдохнуть в колючках. Пяти секунд будет достаточно.",
+  },
+  PELMEN: {
+    name: "Пельмень",
+    text: "Найди лиану и не упусти шанс эффектно зацепиться за неё после прыжка сверху.",
+  },
+  BUDILNIK: {
+    name: "Будильник",
+    text: "Проверь свою стрессоустойчивость через непосредственное взаимодействие с ядовитой миной.",
+  },
+  VERMISHEL: {
+    name: "Вермишель",
+    text: "Найди гриб и не упусти шанс эффектно приземлиться на него после прыжка сверху.",
+  },
+  SHVABRA: {
+    name: "Швабра",
+    text: "Проверь свою стрессоустойчивость через непосредственное взаимодействие со споровым облаком.",
+  },
+  MUSHROOM: {
+    name: "Грибной протокол",
+    text: "Найди гриб и используй его максимально эффектно. Чем драматичнее момент, тем лучше.",
+  },
+};
+const codeInput = document.getElementById("codeInput"),
+  unlockBtn = document.getElementById("unlockBtn"),
+  errorText = document.getElementById("errorText"),
+  lockCard = document.getElementById("lockCard"),
+  missionCard = document.getElementById("missionCard");
+function normalize(v) {
+  return v
+    .trim()
+    .toUpperCase()
+    .replaceAll("Ё", "Е")
+    .replace(/[^A-ZА-Я0-9]/g, "");
+}
+function unlock() {
+  const code = normalize(codeInput.value),
+    mission = missions[code];
+  if (!mission) {
+    errorText.classList.remove("hidden");
+    return;
+  }
+  document.getElementById("missionName").textContent = mission.name;
+  document.getElementById("missionText").textContent = mission.text;
+  lockCard.classList.add("hidden");
+  missionCard.classList.remove("hidden");
+  sessionStorage.setItem("idealbro-peak-code", code);
+}
+unlockBtn.onclick = unlock;
+codeInput.onkeydown = (e) => {
+  if (e.key === "Enter") unlock();
+};
+const saved = sessionStorage.getItem("idealbro-peak-code");
+if (saved && missions[saved]) {
+  codeInput.value = saved;
+  unlock();
+}

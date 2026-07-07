@@ -3,6 +3,7 @@
 Статичный сайт для GitHub Pages.
 
 Страницы:
+
 - index.html — главная
 - test.html — кастомный тест
 - rules.html — правила

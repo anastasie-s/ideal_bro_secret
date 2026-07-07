@@ -3,6 +3,8 @@ const SHEETS_URL = "https://script.google.com/macros/s/AKfycbybdZ7saSVOPyAm5TdZP
 const REQUIRED_PLAYERS = 6;
 
 let currentSource = "real";
+let selectedGame = 1;
+
 let state = {
   players: [],
   groups: [],
@@ -39,107 +41,15 @@ function jsonp(action, params = {}) {
   });
 }
 
-function setStage(title, text) {
-  $("stageTitle").textContent = title;
-  $("stageText").textContent = text;
-}
-
-function setOutput(html) {
-  $("output").innerHTML = html;
-}
-
-function clearOutput() {
-  $("output").innerHTML = "";
-}
-
-async function runLoader(lines, minDelay = 900) {
+async function runLoader(lines, delay = 850) {
   $("loader").classList.remove("hidden");
 
   for (const line of lines) {
     $("loaderText").textContent = line;
-    await sleep(minDelay);
+    await sleep(delay);
   }
 
   $("loader").classList.add("hidden");
-}
-
-function renderPlayers(players) {
-  return `
-    <div class="admin-result-block">
-      <h2>Участники</h2>
-      <div class="admin-mini-grid">
-        ${players.map((p, i) => `
-          <div class="admin-chip">
-            <span>${i + 1}</span>
-            <b>${p.name}</b>
-          </div>
-        `).join("")}
-      </div>
-    </div>
-  `;
-}
-
-function renderGroups(groups) {
-  const groupA = groups.filter(g => g.group === "A");
-  const groupB = groups.filter(g => g.group === "B");
-
-  return `
-    <div class="admin-result-block">
-      <h2>Группы</h2>
-      <div class="admin-two-cols">
-        <div class="group-box">
-          <h3>Group A</h3>
-          ${groupA.map(p => `<div class="admin-chip"><b>${p.name}</b></div>`).join("")}
-        </div>
-
-        <div class="group-box">
-          <h3>Group B</h3>
-          ${groupB.map(p => `<div class="admin-chip"><b>${p.name}</b></div>`).join("")}
-        </div>
-      </div>
-    </div>
-  `;
-}
-
-function renderPairs(game, pairs) {
-  return `
-    <div class="admin-result-block">
-      <h2>Пары · Игра ${game}</h2>
-      <div class="pairs-show-list">
-        ${pairs.map((pair, i) => `
-          <div class="pair-show-card">
-            <span>Пара ${i + 1}</span>
-            <b>${pair.player1}</b>
-            <em>+</em>
-            <b>${pair.player2}</b>
-          </div>
-        `).join("")}
-      </div>
-    </div>
-  `;
-}
-
-function renderState() {
-  let html = "";
-
-  if (state.players.length) {
-    html += renderPlayers(state.players);
-  }
-
-  if (state.groups.length) {
-    html += renderGroups(state.groups);
-  }
-
-  const games = [1, 2, 3];
-
-  games.forEach(game => {
-    const gamePairs = state.pairs.filter(p => Number(p.game) === game);
-    if (gamePairs.length) {
-      html += renderPairs(game, gamePairs);
-    }
-  });
-
-  setOutput(html);
 }
 
 function validatePlayers(players) {
@@ -157,22 +67,157 @@ function validatePlayers(players) {
   return null;
 }
 
-async function loadAdminState() {
-  clearOutput();
+function getPairsForGame(game) {
+  return state.pairs.filter(p => Number(p.game) === Number(game));
+}
 
+function hasGame(game) {
+  return getPairsForGame(game).length > 0;
+}
+
+function canGenerateGame(game) {
+  if (!state.groups.length) return false;
+  if (hasGame(game)) return false;
+  if (game === 1) return true;
+  if (game === 2) return hasGame(1);
+  if (game === 3) return hasGame(1) && hasGame(2);
+  return false;
+}
+
+function renderPlayers() {
+  if (!state.players.length) {
+    $("playersBox").innerHTML = "";
+    return;
+  }
+
+  $("playersBox").innerHTML = `
+    <div class="compact-block">
+      <h3>Участники</h3>
+      <div class="compact-list">
+        ${state.players.map((p, i) => `
+          <div class="compact-chip">
+            <span>${i + 1}</span>
+            <b>${p.name}</b>
+          </div>
+        `).join("")}
+      </div>
+    </div>
+  `;
+}
+
+function renderGroups() {
+  if (!state.groups.length) {
+    $("groupsBox").innerHTML = "";
+    return;
+  }
+
+  const groupA = state.groups.filter(p => p.group === "A");
+  const groupB = state.groups.filter(p => p.group === "B");
+
+  $("groupsBox").innerHTML = `
+    <div class="compact-block">
+      <h3>Группы</h3>
+      <div class="compact-groups">
+        <div>
+          <h4>Group A</h4>
+          ${groupA.map(p => `<div class="compact-chip"><b>${p.name}</b></div>`).join("")}
+        </div>
+        <div>
+          <h4>Group B</h4>
+          ${groupB.map(p => `<div class="compact-chip"><b>${p.name}</b></div>`).join("")}
+        </div>
+      </div>
+    </div>
+  `;
+}
+
+function renderPairs() {
+  const pairs = getPairsForGame(selectedGame);
+
+  if (!pairs.length) {
+    $("pairsBox").innerHTML = "";
+    return;
+  }
+
+  $("pairsBox").innerHTML = `
+    <div class="pairs-compact-list">
+      ${pairs.map((pair, i) => `
+        <div class="pair-compact-card">
+          <span>Пара ${i + 1}</span>
+          <b>${pair.player1}</b>
+          <em>+</em>
+          <b>${pair.player2}</b>
+        </div>
+      `).join("")}
+    </div>
+  `;
+}
+
+function renderGamePanel() {
+  $("gameNumber").textContent = `0${selectedGame + 1}`;
+  $("gameTitle").textContent = `Пары · Игра ${selectedGame}`;
+  $("generatePairsBtn").textContent = `Сформировать пары для игры ${selectedGame} →`;
+
+  const pairs = getPairsForGame(selectedGame);
+
+  if (!state.groups.length) {
+    $("gameStatus").textContent = "Сначала загрузи результаты и создай группы.";
+    $("generatePairsBtn").disabled = true;
+  } else if (pairs.length) {
+    $("gameStatus").textContent = `Пары для игры ${selectedGame} уже сохранены.`;
+    $("generatePairsBtn").disabled = true;
+  } else if (selectedGame === 2 && !hasGame(1)) {
+    $("gameStatus").textContent = "Сначала нужно сформировать пары для игры 1.";
+    $("generatePairsBtn").disabled = true;
+  } else if (selectedGame === 3 && !hasGame(2)) {
+    $("gameStatus").textContent = "Сначала нужно сформировать пары для игры 2.";
+    $("generatePairsBtn").disabled = true;
+  } else {
+    $("gameStatus").textContent = "Готово к запуску протокола формирования пар.";
+    $("generatePairsBtn").disabled = false;
+  }
+
+  renderPairs();
+}
+
+function renderAll() {
+  const validationError = validatePlayers(state.players);
+
+  if (!state.players.length) {
+    $("leftStatus").textContent = "Результаты ещё не загружены.";
+  } else if (validationError) {
+    $("leftStatus").textContent = validationError;
+  } else if (!state.groups.length) {
+    $("leftStatus").textContent = "Участники загружены. Можно создать группы.";
+  } else {
+    $("leftStatus").textContent = "Группы сохранены. Можно формировать пары.";
+  }
+
+  renderPlayers();
+  renderGroups();
+
+  $("createGroupsBtn").classList.toggle(
+    "hidden",
+    !state.players.length || Boolean(validationError) || Boolean(state.groups.length)
+  );
+
+  renderGamePanel();
+}
+
+async function loadAdminState() {
   await runLoader([
     "Подключаемся к таблице...",
-    "Считываем результаты теста...",
-    "Проверяем участников...",
-    "Восстанавливаем сохранённый протокол..."
-  ], 800);
+    "Считываем результаты...",
+    "Проверяем 6 участников...",
+    "Восстанавливаем группы и пары..."
+  ], 700);
 
   const response = await jsonp("getAdminState", {
     source: currentSource
   });
 
   if (!response.ok) {
-    setStage("Ошибка протокола", response.error || "Не удалось загрузить данные.");
+    $("leftStatus").textContent = response.error || "Не удалось загрузить данные.";
     return;
   }
 
@@ -180,39 +225,14 @@ async function loadAdminState() {
   state.groups = response.groups || [];
   state.pairs = response.pairs || [];
 
-  const validationError = validatePlayers(state.players);
-
-  if (validationError) {
-    setStage("Проверка не пройдена", validationError);
-    renderState();
-    return;
-  }
-
-  if (!state.groups.length) {
-    setStage("Результаты загружены", "Участники найдены. Теперь можно разделить их на две группы.");
-  } else {
-    setStage("Протокол восстановлен", "Группы и сохранённые пары загружены из таблицы.");
-  }
-
-  renderState();
-
-  if (!state.groups.length) {
-    $("output").innerHTML += `
-      <button class="btn primary admin-next-btn" id="createGroupsBtn">
-        Разделить на две группы →
-      </button>
-    `;
-
-    $("createGroupsBtn").onclick = createGroups;
-  }
+  renderAll();
 }
 
 async function createGroups() {
   await runLoader([
     "Запускаем модуль группировки...",
     "Проверяем уникальность имён...",
-    "Сверяем количество участников...",
-    "Формируем две экспериментальные группы...",
+    "Разделяем участников на две группы...",
     "Сохраняем группы в протокол..."
   ], 900);
 
@@ -221,77 +241,81 @@ async function createGroups() {
   });
 
   if (!response.ok) {
-    setStage("Группы не созданы", response.error || "Ошибка при создании групп.");
+    $("leftStatus").textContent = response.error || "Ошибка создания групп.";
     return;
   }
 
   state.groups = response.groups || [];
-
-  setStage("Группы сформированы", "Теперь можно выбирать пары для игр 1, 2 и 3.");
-  renderState();
+  renderAll();
 }
 
-async function generatePairs(game) {
+async function generatePairs() {
+  if (!canGenerateGame(selectedGame)) {
+    renderGamePanel();
+    return;
+  }
+
   await runLoader([
-    `Запускаем протокол игры ${game}...`,
+    `Запускаем протокол игры ${selectedGame}...`,
     "Считываем сохранённые группы...",
     "Проверяем историю предыдущих пар...",
     "Исключаем повторы...",
     "Анализируем совместимость...",
-    "Формируем финальный список пар...",
-    "Сохраняем протокол в таблицу..."
+    "Сохраняем финальный протокол..."
   ], 900);
 
   const response = await jsonp("generatePairs", {
     source: currentSource,
-    game
+    game: selectedGame
   });
 
   if (!response.ok) {
-    setStage(`Пары для игры ${game} не созданы`, response.error || "Ошибка генерации.");
-    renderState();
+    $("gameStatus").textContent = response.error || "Ошибка генерации.";
     return;
   }
 
   state.groups = response.groups || state.groups;
   state.pairs = response.pairs || [];
 
-  setStage(`Пары для игры ${game} готовы`, "Протокол сохранён. Можно продолжать.");
-  renderState();
+  renderAll();
 }
 
 async function seedSandbox() {
   await runLoader([
-    "Открываем sandbox-таблицу...",
-    "Удаляем старые тестовые данные...",
+    "Открываем sandbox...",
+    "Очищаем старые тестовые данные...",
     "Генерируем 6 фиктивных участников...",
     "Заполняем случайные ответы...",
     "Сохраняем sandbox-протокол..."
-  ], 850);
+  ], 700);
 
   const response = await jsonp("seedSandbox");
 
   if (!response.ok) {
-    setStage("Sandbox не заполнен", response.error || "Ошибка заполнения.");
+    $("leftStatus").textContent = response.error || "Sandbox не заполнен.";
     return;
   }
 
-  setStage("Sandbox заполнен", "Переключись на «Запуск теста» и загрузи результаты.");
+  currentSource = "sandbox";
+  document.querySelectorAll(".source-btn").forEach(b => b.classList.remove("active"));
+  document.querySelector('[data-source="sandbox"]').classList.add("active");
+
+  await loadAdminState();
 }
 
 async function resetCurrentSource() {
   await runLoader([
-    "Сбрасываем сохранённые группы...",
-    "Удаляем историю пар для текущего режима...",
+    "Сбрасываем группы...",
+    "Удаляем историю пар...",
     "Возвращаем протокол в начальное состояние..."
-  ], 750);
+  ], 650);
 
   const response = await jsonp("resetAdminState", {
     source: currentSource
   });
 
   if (!response.ok) {
-    setStage("Сброс не выполнен", response.error || "Ошибка сброса.");
+    $("leftStatus").textContent = response.error || "Ошибка сброса.";
     return;
   }
 
@@ -301,15 +325,11 @@ async function resetCurrentSource() {
     pairs: []
   };
 
-  clearOutput();
-  setStage("Протокол сброшен", "Можно заново загрузить результаты.");
+  renderAll();
 }
 
 async function checkAdminPassword(password) {
-  const response = await jsonp("checkAdminPassword", {
-    password
-  });
-
+  const response = await jsonp("checkAdminPassword", { password });
   return response.ok === true;
 }
 
@@ -343,11 +363,15 @@ if (sessionStorage.getItem("idealbro-admin-unlocked") === "yes") {
 }
 
 document.querySelectorAll(".source-btn").forEach(button => {
-  button.onclick = () => {
+  button.onclick = async () => {
     document.querySelectorAll(".source-btn").forEach(b => b.classList.remove("active"));
     button.classList.add("active");
 
     currentSource = button.dataset.source;
+    selectedGame = 1;
+
+    document.querySelectorAll(".game-tab").forEach(b => b.classList.remove("active"));
+    document.querySelector('[data-game="1"]').classList.add("active");
 
     state = {
       players: [],
@@ -355,21 +379,24 @@ document.querySelectorAll(".source-btn").forEach(button => {
       pairs: []
     };
 
-    clearOutput();
-
-    setStage(
-      currentSource === "real" ? "Боевой режим" : "Запуск теста",
-      currentSource === "real"
-        ? "Будут использоваться реальные результаты участников."
-        : "Будут использоваться sandbox-данные."
-    );
+    renderAll();
   };
 });
 
 document.querySelectorAll(".game-tab").forEach(button => {
-  button.onclick = () => generatePairs(button.dataset.game);
+  button.onclick = () => {
+    document.querySelectorAll(".game-tab").forEach(b => b.classList.remove("active"));
+    button.classList.add("active");
+
+    selectedGame = Number(button.dataset.game);
+    renderGamePanel();
+  };
 });
 
 $("loadBtn").onclick = loadAdminState;
 $("seedBtn").onclick = seedSandbox;
 $("resetBtn").onclick = resetCurrentSource;
+$("createGroupsBtn").onclick = createGroups;
+$("generatePairsBtn").onclick = generatePairs;
+
+renderAll();

@@ -6,7 +6,7 @@
     <title>IDEAL BRO</title>
     <link rel="stylesheet" href="style.css" />
   </head>
-
+  <script src="home.js"></script>
   <body>
     <div class="grain"></div>
 
@@ -26,15 +26,49 @@
     <main class="hero">
       <section class="hero-text">
         <h1>Найди своего<br><span>идеального бро</span></h1>
-
+    
         <p class="lead">
           Лучшее в мире приложение для поиска твоего идеального бро:
           научно сомнительное, визуально убедительное и абсолютно необходимое.
         </p>
-
+    
         <div class="actions">
           <a class="btn primary" href="rules.html">Посмотреть правила →</a>
           <a class="btn ghost" href="results.html">Посмотреть результаты</a>
+        </div>
+      </section>
+    
+      <section class="countdown-card">
+        <p class="kicker">ДО НАЧАЛА ЭКСПЕРИМЕНТА</p>
+    
+        <div class="countdown" id="countdown">
+          <div class="countdown-unit">
+            <strong id="days">--</strong>
+            <span>ДНЕЙ</span>
+          </div>
+    
+          <div class="countdown-divider">:</div>
+    
+          <div class="countdown-unit">
+            <strong id="hours">--</strong>
+            <span>ЧАСОВ</span>
+          </div>
+    
+          <div class="countdown-divider">:</div>
+    
+          <div class="countdown-unit">
+            <strong id="minutes">--</strong>
+            <span>МИНУТ</span>
+          </div>
+        </div>
+    
+        <p class="countdown-note" id="countdownNote">
+          Дата эксперимента уточняется
+        </p>
+    
+        <div class="countdown-status">
+          <span class="status-dot"></span>
+          СИСТЕМА В РЕЖИМЕ ОЖИДАНИЯ
         </div>
       </section>
     </main>

@@ -11,13 +11,21 @@
   <div class="grain"></div>
 
   <main class="page">
+    
     <section class="intro">
       <p class="kicker">admin protocol</p>
       <h1>Pair Generator</h1>
       <p class="lead">Загрузи результаты теста, раздели участников на две группы и собери пары.</p>
     </section>
-
-    <section class="test-card">
+    <section class="lock-card" id="adminLockScreen">
+      <span class="lock-icon">🔒</span>
+      <h2>Admin access</h2>
+      <p class="sub">Введи пароль организатора.</p>
+      <input id="adminCodeInput" class="input code" type="password" placeholder="Пароль" autocomplete="off" />
+      <button class="btn primary full" id="adminUnlockBtn">Открыть админ-панель →</button>
+      <p id="adminErrorText" class="error hidden">Пароль неверный.</p>
+    </section>
+    <section class="test-card hidden" id="adminPanel">
       <button class="btn primary" id="loadBtn">Загрузить результаты</button>
       <button class="btn ghost" id="splitBtn">Разделить на 2 группы</button>
       <button class="btn primary" id="pairBtn">Составить пары</button>

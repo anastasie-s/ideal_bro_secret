@@ -1,4 +1,4 @@
-const SHEETS_URL = "https://script.google.com/macros/s/AKfycbxKOLymKvspPPRj_mi_KIyifjX5EOMkngqa89O60E36MBZQjBBdMKV1BevPX21B4dUn/exec";
+const SHEETS_URL = "https://script.google.com/macros/s/AKfycbyejNOA8EWG9BgLWn7qBuuk0XK_PlD9sIlABHjNmRG3fMBwRRkGd-3NCr5-5v9VNxrE/exec";
 const questions = [
   {
     text: "Какой твой овощ сегодня?",

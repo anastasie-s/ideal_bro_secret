@@ -224,10 +224,6 @@ async function showResult(){
       "Ответы не отправились. Позови организатора.";
   }
 }
-$("copyBtn").onclick = async () => {
-  await navigator.clipboard.writeText($("resultJson").value);
-  $("copyBtn").textContent = "Скопировано!";
-};
 $("restartBtn").onclick = () => {
   state = {
     name: "",

@@ -41,15 +41,22 @@ function jsonp(action, params = {}) {
   });
 }
 
-async function runLoader(lines, delay = 850) {
-  $("loader").classList.remove("hidden");
+async function runLoader(targetId, lines, delay = 850) {
+  const target = $(targetId);
+
+  target.innerHTML = `
+    <div class="inline-loader">
+      <div class="loader-ring"></div>
+      <p id="inlineLoaderText">${lines[0]}</p>
+    </div>
+  `;
+
+  const text = document.getElementById("inlineLoaderText");
 
   for (const line of lines) {
-    $("loaderText").textContent = line;
+    text.textContent = line;
     await sleep(delay);
   }
-
-  $("loader").classList.add("hidden");
 }
 
 function validatePlayers(players) {
@@ -205,7 +212,7 @@ function renderAll() {
 }
 
 async function loadAdminState() {
-  await runLoader([
+  await runLoader("playersBox", [
     "Подключаемся к таблице...",
     "Считываем результаты...",
     "Проверяем 6 участников...",
@@ -229,7 +236,7 @@ async function loadAdminState() {
 }
 
 async function createGroups() {
-  await runLoader([
+  await runLoader("groupsBox", [
     "Запускаем модуль группировки...",
     "Проверяем уникальность имён...",
     "Разделяем участников на две группы...",
@@ -255,7 +262,7 @@ async function generatePairs() {
     return;
   }
 
-  await runLoader([
+  await runLoader("pairsBox", [
     `Запускаем протокол игры ${selectedGame}...`,
     "Считываем сохранённые группы...",
     "Проверяем историю предыдущих пар...",
@@ -281,7 +288,7 @@ async function generatePairs() {
 }
 
 async function seedSandbox() {
-  await runLoader([
+  await runLoader("playersBox", [
     "Открываем sandbox...",
     "Очищаем старые тестовые данные...",
     "Генерируем 6 фиктивных участников...",
@@ -304,7 +311,7 @@ async function seedSandbox() {
 }
 
 async function resetCurrentSource() {
-  await runLoader([
+  await runLoader("playersBox", [
     "Сбрасываем группы...",
     "Удаляем историю пар...",
     "Возвращаем протокол в начальное состояние..."

@@ -6,17 +6,17 @@
 const EVENT_DAYS = [
   {
     day: 1,
-    date: new Date("2026-10-15T18:00:00"),
+    date: new Date("2030-10-15T18:00:00"),
     title: "ПЕРВЫЙ ЭТАП"
   },
   {
     day: 2,
-    date: new Date("2026-10-16T18:00:00"),
+    date: new Date("2030-10-16T18:00:00"),
     title: "ВТОРОЙ ЭТАП"
   },
   {
     day: 3,
-    date: new Date("2026-10-17T18:00:00"),
+    date: new Date("2030-10-17T18:00:00"),
     title: "ФИНАЛЬНЫЙ ЭТАП"
   }
 ];

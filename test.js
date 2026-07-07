@@ -1,3 +1,4 @@
+const SHEETS_URL = "https://script.google.com/macros/s/AKfycbxKOLymKvspPPRj_mi_KIyifjX5EOMkngqa89O60E36MBZQjBBdMKV1BevPX21B4dUn/exec";
 const questions = [
   {
     text: "Какой твой овощ сегодня?",
@@ -185,18 +186,43 @@ $("nextBtn").onclick = () => {
     renderQuestion();
   } else showResult();
 };
-function showResult() {
-  $("questionScreen").classList.add("hidden");
-  $("resultScreen").classList.remove("hidden");
+async function showResult(){
+  questionScreen.classList.add("hidden");
+  resultScreen.classList.remove("hidden");
+
   const result = {
     player: state.name,
     date: new Date().toISOString(),
-    answers: state.answers,
+    answers: state.answers
   };
-  localStorage.setItem("idealbro-test-result", JSON.stringify(result));
-  $("resultText").textContent =
-    `${state.name}, протокол совместимости готов. Скопируй этот блок и отправь организатору.`;
-  $("resultJson").value = JSON.stringify(result, null, 2);
+
+  localStorage.setItem(
+    "idealbro-test-result",
+    JSON.stringify(result)
+  );
+
+  $("resultTitle").textContent = "Отправляем протокол...";
+  $("resultText").textContent = "Секунду, бро.";
+
+  try {
+    await fetch(SHEETS_URL, {
+      method: "POST",
+      mode: "no-cors",
+      headers: {
+        "Content-Type": "text/plain"
+      },
+      body: JSON.stringify(result)
+    });
+
+    $("resultTitle").textContent = "Протокол составлен";
+    $("resultText").textContent =
+      `${state.name}, твои ответы приняты. Наука сделала своё дело.`;
+
+  } catch (error) {
+    $("resultTitle").textContent = "Что-то пошло не так";
+    $("resultText").textContent =
+      "Ответы не отправились. Позови организатора.";
+  }
 }
 $("copyBtn").onclick = async () => {
   await navigator.clipboard.writeText($("resultJson").value);

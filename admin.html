@@ -11,7 +11,7 @@
 <body>
   <div class="grain"></div>
 
-  <main class="admin-show-page">
+  <main class="admin-screen">
     <section class="lock-card" id="adminLockScreen">
       <span class="lock-icon">🔒</span>
       <h2>Admin access</h2>
@@ -21,39 +21,73 @@
       <p id="adminErrorText" class="error hidden">Пароль неверный.</p>
     </section>
 
-    <section class="admin-show-card hidden" id="adminPanel">
-      <div class="admin-show-head">
-        <p class="kicker">АДМИН-ПРОТОКОЛ</p>
+    <section class="admin-dashboard hidden" id="adminPanel">
+      <header class="admin-dashboard-head">
+        <div>
+          <p class="kicker">АДМИН-ПРОТОКОЛ</p>
+          <h1>Pair Control</h1>
+        </div>
 
         <div class="source-toggle">
           <button class="source-btn active" data-source="real">Боевой режим</button>
           <button class="source-btn" data-source="sandbox">Запуск теста</button>
         </div>
+      </header>
+
+      <div class="admin-toolbar">
+        <button class="btn primary" id="loadBtn">Загрузить результаты</button>
+        <button class="btn ghost" id="seedBtn">Заполнить sandbox</button>
+        <button class="btn ghost" id="resetBtn">Начать сначала</button>
       </div>
 
-      <div class="game-tabs">
-        <button class="game-tab" data-game="1">Игра 1</button>
-        <button class="game-tab" data-game="2">Игра 2</button>
-        <button class="game-tab" data-game="3">Игра 3</button>
-      </div>
+      <div class="admin-workspace">
+        <aside class="admin-left">
+          <div class="panel-title">
+            <span>01</span>
+            <b>Участники и группы</b>
+          </div>
 
-      <div class="admin-stage" id="stage">
-        <div class="admin-big-mark">✦</div>
-        <h1 id="stageTitle">Протокол готов</h1>
-        <p id="stageText">Загрузи результаты теста, чтобы начать формирование групп.</p>
+          <div id="leftStatus" class="admin-muted">
+            Результаты ещё не загружены.
+          </div>
 
-        <div class="admin-main-actions" id="mainActions">
-          <button class="btn primary" id="loadBtn">Загрузить результаты</button>
-          <button class="btn ghost" id="seedBtn">Заполнить sandbox</button>
-          <button class="btn ghost" id="resetBtn">Начать сначала</button>
-        </div>
+          <div id="playersBox"></div>
+          <div id="groupsBox"></div>
 
-        <div class="admin-loader hidden" id="loader">
-          <div class="loader-ring"></div>
-          <p id="loaderText">Подключаемся к протоколу...</p>
-        </div>
+          <button class="btn primary full hidden" id="createGroupsBtn">
+            Разделить на две группы →
+          </button>
+        </aside>
 
-        <div class="admin-output" id="output"></div>
+        <section class="admin-right">
+          <div class="game-tabs">
+            <button class="game-tab active" data-game="1">Игра 1</button>
+            <button class="game-tab" data-game="2">Игра 2</button>
+            <button class="game-tab" data-game="3">Игра 3</button>
+          </div>
+
+          <div class="game-panel">
+            <div class="panel-title">
+              <span id="gameNumber">02</span>
+              <b id="gameTitle">Пары · Игра 1</b>
+            </div>
+
+            <div class="admin-loader hidden" id="loader">
+              <div class="loader-ring"></div>
+              <p id="loaderText">Анализируем протокол...</p>
+            </div>
+
+            <div id="gameStatus" class="admin-muted">
+              Сначала загрузи результаты и создай группы.
+            </div>
+
+            <div id="pairsBox"></div>
+
+            <button class="btn primary full" id="generatePairsBtn" disabled>
+              Сформировать пары для игры 1 →
+            </button>
+          </div>
+        </section>
       </div>
     </section>
   </main>

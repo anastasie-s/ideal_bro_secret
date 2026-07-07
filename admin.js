@@ -41,29 +41,54 @@ function jsonp(action, params = {}) {
   });
 }
 
-async function runLoader(targetId, lines, delay = 850) {
+async function runLoader(
+  targetId,
+  requestPromise,
+  lines,
+  minDuration = 5000
+) {
   const target = $(targetId);
 
   target.innerHTML = `
     <div class="inline-loader">
       <div class="loader-ring"></div>
-      <p id="inlineLoaderText">${lines[0]}</p>
+      <p class="inline-loader-text">${lines[0]}</p>
       <div class="loader-progress">
-        <div class="loader-progress-bar" id="loaderProgressBar"></div>
+        <div class="loader-progress-bar"></div>
       </div>
     </div>
   `;
 
-  const text = document.getElementById("inlineLoaderText");
-  const bar = document.getElementById("loaderProgressBar");
+  const text = target.querySelector(".inline-loader-text");
+  const bar = target.querySelector(".loader-progress-bar");
 
-  for (let i = 0; i < lines.length; i++) {
-    text.textContent = lines[i];
-    bar.style.width = `${Math.round(((i + 1) / lines.length) * 100)}%`;
-    await sleep(delay);
-  }
+  const startedAt = Date.now();
+  const stepDuration = minDuration / lines.length;
+
+  const animationPromise = (async () => {
+    for (let i = 0; i < lines.length; i++) {
+      text.textContent = lines[i];
+
+      bar.style.width =
+        `${Math.round(((i + 1) / lines.length) * 100)}%`;
+
+      await sleep(stepDuration);
+    }
+  })();
+
+  const response = await requestPromise;
+
+  const elapsed = Date.now() - startedAt;
+  const remaining = Math.max(0, minDuration - elapsed);
+
+  await Promise.all([
+    animationPromise,
+    sleep(remaining)
+  ]);
 
   target.innerHTML = "";
+
+  return response;
 }
 
 function showSparks(targetId) {
@@ -250,16 +275,17 @@ function renderAll() {
 }
 
 async function loadAdminState() {
-  await runLoader("playersBox", [
-    "Подключаемся к таблице...",
-    "Считываем результаты...",
-    "Проверяем 6 участников...",
-    "Восстанавливаем группы и пары..."
-  ], 700);
-
-  const response = await jsonp("getAdminState", {
-    source: currentSource
-  });
+  const response = await runLoader(
+    "playersBox",
+    jsonp("getAdminState", { source: currentSource }),
+    [
+      "Подключаемся к таблице...",
+      "Считываем результаты...",
+      "Проверяем 6 участников...",
+      "Восстанавливаем группы и пары..."
+    ],
+    3000
+  );
 
   if (!response.ok) {
     $("leftStatus").textContent = response.error || "Не удалось загрузить данные.";
@@ -274,16 +300,18 @@ async function loadAdminState() {
 }
 
 async function createGroups() {
-  await runLoader("groupsBox", [
-    "Запускаем модуль группировки...",
-    "Проверяем уникальность имён...",
-    "Разделяем участников на две группы...",
-    "Сохраняем группы в протокол..."
-  ], 900);
-
-  const response = await jsonp("createGroups", {
-    source: currentSource
-  });
+  const response = await runLoader(
+    "groupsBox",
+    jsonp("createGroups", { source: currentSource }),
+    [
+      "Считываем результаты тестирования...",
+      "Ищем закономерности...",
+      "Анализируем совместимость...",
+      "Балансируем состав...",
+      "Формируем экспериментальные группы..."
+    ],
+    6000
+  );
 
   if (!response.ok) {
     $("leftStatus").textContent = response.error || "Ошибка создания групп.";
@@ -301,19 +329,22 @@ async function generatePairs() {
     return;
   }
 
-  await runLoader("pairsBox", [
-    `Запускаем протокол игры ${selectedGame}...`,
-    "Считываем сохранённые группы...",
-    "Проверяем историю предыдущих пар...",
-    "Исключаем повторы...",
-    "Анализируем совместимость...",
-    "Сохраняем финальный протокол..."
-  ], 900);
-
-  const response = await jsonp("generatePairs", {
-    source: currentSource,
-    game: selectedGame
-  });
+  const response = await runLoader(
+    "pairsBox",
+    jsonp("generatePairs", {
+      source: currentSource,
+      game: selectedGame
+    }),
+    [
+      "Проверяем предыдущие встречи...",
+      "Исключаем повторения...",
+      "Ищем оптимальные сочетания...",
+      "Анализируем совместимость...",
+      "Проводим финальную проверку...",
+      "Утверждаем протокол..."
+    ],
+    7000
+  );
 
   if (!response.ok) {
     $("gameStatus").textContent = response.error || "Ошибка генерации.";
@@ -323,7 +354,7 @@ async function generatePairs() {
   state.groups = response.groups || state.groups;
   state.pairs = response.pairs || [];
 
-  renderAll();
+  renderGamePanel();
   showSparks("pairsBox");
 }
 

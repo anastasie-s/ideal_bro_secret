@@ -536,3 +536,41 @@ footer b {
     flex: auto;
   }
 }
+.admin-grid{
+  display:grid;
+  grid-template-columns:1fr 1fr;
+  gap:18px;
+  margin:18px 0 30px;
+}
+
+.admin-list{
+  display:grid;
+  gap:10px;
+  margin:14px 0 28px;
+}
+
+.admin-item{
+  border:1px solid var(--line);
+  border-radius:10px;
+  padding:14px 16px;
+  background:rgba(255,255,255,.035);
+  color:var(--paper);
+}
+
+.admin-item.pair{
+  display:flex;
+  align-items:center;
+  justify-content:space-between;
+  gap:18px;
+}
+
+.admin-item span{
+  color:var(--gold2);
+  font-weight:900;
+}
+
+@media (max-width:800px){
+  .admin-grid{
+    grid-template-columns:1fr;
+  }
+}

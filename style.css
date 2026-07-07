@@ -1382,11 +1382,12 @@ button:disabled{
 }
 
 .compact-chip{
-  min-height:40px;
+  min-height:46px;
   display:flex;
   align-items:center;
-  justify-content:center;
-  gap:9px;
+  justify-content:flex-start;
+  gap:10px;
+  padding:0 14px;
   border:1px solid var(--line);
   border-radius:10px;
   background:rgba(255,255,255,.035);
@@ -1395,8 +1396,8 @@ button:disabled{
 }
 
 .compact-chip span{
-  width:22px;
-  height:22px;
+  width:20px;
+  height:20px;
   display:grid;
   place-items:center;
   border-radius:50%;
@@ -1404,6 +1405,7 @@ button:disabled{
   color:var(--gold2);
   font-size:10px;
   font-weight:900;
+  flex-shrink:0;
 }
 
 .compact-groups{

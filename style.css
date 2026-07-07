@@ -510,6 +510,9 @@ footer b {
   h1 {
     font-size: 58px;
   }
+  .hero h1{
+    font-size:clamp(48px,6vw,82px);
+  }
   .question-top {
     align-items: flex-start;
     flex-direction: column;

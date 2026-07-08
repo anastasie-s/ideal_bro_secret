@@ -2044,3 +2044,26 @@ svg{
     grid-template-columns: 1fr;
   }
 }
+
+.place-button {
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+
+  padding: 14px 28px;
+
+  border: 1px solid rgba(255,255,255,.18);
+  border-radius: 10px;
+
+  color: #eee5d2;
+  text-decoration: none;
+
+  font-weight: 700;
+  letter-spacing: .05em;
+
+  transition: .2s;
+}
+
+.place-button:hover {
+  background: rgba(255,255,255,.08);
+}

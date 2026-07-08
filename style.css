@@ -1949,3 +1949,53 @@ svg{
     text-align:center;
   }
 }
+
+/* MOBILE HOME FIX */
+
+@media (max-width: 760px) {
+  .hero {
+    display: grid;
+    grid-template-columns: 1fr !important;
+    grid-template-rows: auto auto;
+    gap: 36px;
+    padding: 42px 30px 34px;
+  }
+
+  .hero > section,
+  .hero-text {
+    width: 100%;
+    max-width: 100%;
+    min-width: 0;
+  }
+
+  .countdown-card {
+    width: 100%;
+    max-width: 100%;
+    min-width: 0;
+    grid-column: 1;
+    grid-row: 2;
+    box-sizing: border-box;
+  }
+
+  .countdown {
+    width: 100%;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    gap: 12px;
+  }
+
+  .countdown-unit {
+    flex: 0 1 90px;
+    min-width: 0;
+    text-align: center;
+  }
+
+  .countdown-unit strong {
+    font-size: clamp(38px, 12vw, 54px);
+  }
+
+  .countdown-divider {
+    flex: 0 0 auto;
+  }
+}

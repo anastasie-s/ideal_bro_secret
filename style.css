@@ -2017,37 +2017,86 @@ svg{
 }
 
 
+.participants-page {
+  min-height: calc(100vh - 120px);
+  display: flex;
+  flex-direction: column;
+}
+
+
+.participants-header {
+  margin-bottom: 50px;
+}
+
+
+.participants-header h1 {
+  font-size: clamp(70px, 9vw, 140px);
+  line-height: .85;
+  margin: 20px 0;
+}
+
+
 .participants-grid {
   display: grid;
   grid-template-columns: repeat(6, 1fr);
   gap: 18px;
-  max-width: 1400px;
-  margin: 50px auto;
+
+  width: 100%;
 }
 
 
 .participant-card {
+  border: 1px solid rgba(255,255,255,.15);
+  border-radius: 14px;
+
   padding: 25px 15px;
-  border-radius: 16px;
+
+  text-align: center;
+
+  background:
+    rgba(255,255,255,.02);
 }
 
-.avatar-placeholder {
-  width: 80px;
-  height: 80px;
+
+.participant-number {
+  font-size: 14px;
+  opacity: .7;
   margin-bottom: 15px;
 }
 
-.participant-card h2 {
-  font-size: 20px;
+
+.avatar-placeholder {
+  width: 70px;
+  height: 70px;
+
+  margin: 0 auto 20px;
+
+  border-radius: 50%;
+
+  background:
+    radial-gradient(
+      circle,
+      rgba(212,160,50,.35),
+      rgba(255,255,255,.05)
+    );
 }
 
+
+.participant-card h2 {
+  font-size: 18px;
+  margin: 0 0 10px;
+}
+
+
 .participant-card p {
-  font-size: 14px;
+  font-size: 13px;
+  opacity: .7;
+  margin-bottom: 15px;
 }
 
 
 .participant-card a {
-  color: #e5b24c;
+  color: #d4a032;
   text-decoration: none;
   font-weight: 700;
 }
@@ -2088,6 +2137,18 @@ svg{
   opacity: .9;
 }
 
-.participants-page h1 {
-  font-size: clamp(70px, 8vw, 120px);
+body {
+  min-height: 100vh;
+  display: flex;
+  flex-direction: column;
+}
+
+
+main {
+  flex: 1;
+}
+
+
+footer {
+  margin-top: auto;
 }

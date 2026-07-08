@@ -2183,6 +2183,7 @@ svg{
 
 .section-big-title h1 {
   font-size: 50px;
+  margin-bottom: 10px;
 }
 .participants-header h1 {
   font-size: clamp(50px, 5vw, 75px);

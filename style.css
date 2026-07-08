@@ -2023,14 +2023,13 @@ svg{
 
 
 .participants-header {
-  margin-bottom: 50px;
+  margin-bottom: 30px;
 }
 
 
 .participants-header h1 {
-  font-size: clamp(60px, 7vw, 100px);
-  line-height: 0.9;
-  margin: 15px 0;
+  font-size: clamp(55px, 6vw, 90px);
+  margin: 10px 0 25px;
 }
 
 
@@ -2042,14 +2041,14 @@ svg{
 
 
 .participant-card {
-  min-height: 260px;
+  min-height: 220px;
   display: flex;
   flex-direction: column;
   justify-content: center;
   border: 1px solid rgba(255,255,255,.15);
   border-radius: 14px;
 
-  padding: 25px 15px;
+  padding: 18px 12px;
 
   text-align: center;
 
@@ -2066,8 +2065,8 @@ svg{
 
 
 .avatar-placeholder {
-  width: 70px;
-  height: 70px;
+  width: 60px;
+  height: 60px;
 
   margin: 0 auto 20px;
 
@@ -2094,11 +2093,17 @@ svg{
   margin-bottom: 15px;
 }
 
-
-.participant-card a {
+.participant-card a,
+.host-card a {
   color: #d4a032;
   text-decoration: none;
   font-weight: 700;
+}
+
+
+.participant-card a:hover,
+.host-card a:hover {
+  opacity: .8;
 }
 
 
@@ -2127,10 +2132,9 @@ svg{
 }
 
 .host-section {
-  text-align: center;
-  margin: 40px 0 70px;
+  text-align: center; 
+  margin: 25px 0 45px;
 }
-
 
 .section-label {
   color: #d4a032;
@@ -2141,15 +2145,31 @@ svg{
 
 
 .host-card {
-  width: 260px;
+  width: 220px;
   margin: auto;
 
-  padding: 25px;
+  padding: 18px;
 
   border: 1px solid rgba(255,255,255,.15);
   border-radius: 16px;
+  border-color: rgba(212,160,50,.4);
 
   background: rgba(255,255,255,.03);
+}
+
+.section-title {
+  font-size: clamp(50px, 5vw, 80px);
+  line-height: 0.9;
+  margin: 10px 0 30px;
+}
+
+.host-section .kicker {
+  margin-bottom: 20px;
+}
+
+.host-card .avatar-placeholder {
+  width: 60px;
+  height: 60px;
 }
 
 .place-button {

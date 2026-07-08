@@ -2132,8 +2132,8 @@ svg{
 }
 
 .host-section {
-  text-align: center; 
-  margin: 25px 0 45px;
+  text-align: center;
+  margin-bottom: 50px;
 }
 
 .section-label {
@@ -2170,6 +2170,19 @@ svg{
 .host-card .avatar-placeholder {
   width: 60px;
   height: 60px;
+}
+
+.section-big-title {
+  font-size: clamp(55px, 6vw, 90px);
+  line-height: .9;
+  color: #f2ead8;
+  text-align: center;
+  margin: 0 0 25px;
+}
+
+.section-big-title,
+.participants-header h1 {
+  font-size: clamp(55px, 5vw, 80px);
 }
 
 .place-button {

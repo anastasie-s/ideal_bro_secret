@@ -2018,7 +2018,7 @@ svg{
 
 
 .participants-page {
-  padding: 0 60px 80px;
+  padding: 0 50px 70px;
 }
 
 
@@ -2182,7 +2182,7 @@ svg{
 }
 
 .section-big-title h1 {
-  font-size: clamp(45px, 5vw, 70px);
+  font-size: clamp(35px, 5vw, 60px);
 }
 .participants-header h1 {
   font-size: clamp(50px, 5vw, 75px);

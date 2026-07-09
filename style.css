@@ -2242,3 +2242,176 @@ main {
 footer {
   margin-top: auto;
 }
+
+/* RULES PROTOCOL */
+
+
+.rules-content {
+  margin-top: 50px;
+}
+
+
+
+.protocol-tabs {
+  display: grid;
+  grid-template-columns: repeat(4, 1fr);
+  gap: 14px;
+
+  margin-bottom: 35px;
+}
+
+
+
+.protocol-tab {
+
+  background: transparent;
+
+  border: 1px solid rgba(255,255,255,.15);
+
+  border-radius: 12px;
+
+  padding: 18px;
+
+  color: #eee5d2;
+
+  font-family: inherit;
+
+  font-weight: 700;
+
+  cursor: pointer;
+
+  text-align: left;
+
+}
+
+
+
+.protocol-tab span {
+
+  display: block;
+
+  font-size: 11px;
+
+  letter-spacing: .15em;
+
+  opacity: .6;
+
+  margin-bottom: 8px;
+
+}
+
+
+
+.protocol-tab.active {
+
+  border-color: rgba(212,160,50,.7);
+
+  background: rgba(212,160,50,.08);
+
+}
+
+
+
+
+.protocol-card {
+
+  max-width: 900px;
+
+  padding: 45px;
+
+  border-radius: 20px;
+
+  border: 1px solid rgba(255,255,255,.15);
+
+  background: rgba(255,255,255,.03);
+
+}
+
+
+
+.protocol-number {
+
+  font-size: 12px;
+
+  letter-spacing: .2em;
+
+  opacity: .6;
+
+  margin-bottom: 25px;
+
+}
+
+
+
+.protocol-card h2 {
+
+  font-size: 42px;
+
+  margin-bottom: 25px;
+
+}
+
+
+
+.protocol-card h3 {
+
+  margin-top: 35px;
+
+  font-size: 22px;
+
+}
+
+
+
+.protocol-card p {
+
+  line-height: 1.7;
+
+  opacity: .85;
+
+}
+
+
+
+.rules-warning {
+
+  margin-top: 35px;
+
+  padding-top: 20px;
+
+  border-top: 1px solid rgba(255,255,255,.12);
+
+  font-size: 12px;
+
+  letter-spacing: .1em;
+
+  opacity: .8;
+
+}
+
+
+
+
+@media (max-width: 800px) {
+
+  .protocol-tabs {
+
+    grid-template-columns: 1fr;
+
+  }
+
+
+  .protocol-card {
+
+    padding: 25px;
+
+  }
+
+
+  .protocol-card h2 {
+
+    font-size: 30px;
+
+  }
+
+}
